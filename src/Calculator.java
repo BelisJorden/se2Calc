@@ -1,13 +1,27 @@
 import domain.offence.EmissionOffences;
 import domain.offence.Offence;
 import domain.Penalty;
+import domain.offence.SpeedingOffence;
 
 
 public class Calculator {
-   private EmissionOffences emmisionOffences = new EmissionOffences();
 
-/*
-    public void calculate(Penalty penalty, Offence offence, boolean withHistory) {
+
+   public int calculateSpeedWithoutHistory(Penalty penalty, SpeedingOffence speedingOffence) {
+
+      return (speedingOffence.getSpeed() * speedingOffence.getMaxSpeed() * penalty.getSpeedFactor());
+   }
+
+   public int calculateEmissionWithoutHistory(Penalty penalty) {
+      return penalty.getEmissionFactor();
+   }
+
+   public int calculateWithHistory(int priceWithoutHistory, int offenceAmount, Penalty penalty) {
+      return priceWithoutHistory + (offenceAmount * penalty.getHistoryFactor());
+
+   }
+
+   /* public void calculate(Penalty penalty, Offence offence, boolean withHistory) {
 
 
 
@@ -49,27 +63,28 @@ public class Calculator {
         return priceWithoutHistory + (penaltyService.amountOfPastPenaltys* penalty.getHistoryFactor());
     }
 
-    */
 
 
     //verwijder emmisionoffences na ingestelde tijd
-    /*Timer timer = new Timer();
+    Timer timer = new Timer();
         timer.schedule(new TimerTask() {
         @Override
         public void run() {
             // Your database code here
             emmisionOFfences.removeOfence();
         }
-    }10000, 10000);*/
+    }10000, 10000);
 
     // of dit
-   /* Runnable helloRunnable = new Runnable() {
+    Runnable helloRunnable = new Runnable() {
         public void run() {
            emmisionOFfences.removeOfence();
         }
     };
 
-    ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-executor.scheduleAtFixedRate(helloRunnable, 0, 3, TimeUnit.SECONDS);*/
+    ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);*/
+
+
+//executor.scheduleAtFixedRate(helloRunnable, 0, 3, TimeUnit.SECONDS);
 
 }

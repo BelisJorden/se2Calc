@@ -11,10 +11,23 @@ public class Controller implements InputListener {
     private Logger logger = Logger.getLogger(Controller.class);
 
     private InputService inputService;
+    private PenaltyService penaltyService;
     private Penalty penalty;
+    private boolean calculateWithHistory;
+    private Calculator calculator;
+
+
 
     public Penalty getPenalty() {
         return penalty;
+    }
+
+    public boolean isCalculateWithHistory() {
+        return calculateWithHistory;
+    }
+
+    public void setCalculateWithHistory(boolean calculateWithHistory) {
+        this.calculateWithHistory = calculateWithHistory;
     }
 
     public void setPenalty(Penalty penalty) {
@@ -48,19 +61,30 @@ public class Controller implements InputListener {
 
     @Override
     public void onReceive(Offence offence) {
+        int price = 0;
         try {
-            if (offence instanceof SpeedingOffence) {
+            //Calculate without history
+            if (!calculateWithHistory) {
+                if (offence instanceof SpeedingOffence) {
+                    SpeedingOffence speedingOffence = (SpeedingOffence) offence;
+                    price = calculator.calculateSpeedWithoutHistory(penalty, speedingOffence);
 
-             //   System.out.println(((SpeedingOffence) offence).getMaxSpeed());
-            //    System.out.println("Unmarshalled Speed: " + offence.toString());
+                } else if (offence instanceof EmissionOffence) {
+                    price = calculator.calculateEmissionWithoutHistory(penalty);
+                }
+                //Calculate with history
             } else {
-           //     System.out.println(((EmissionOffence) offence).getEuronorm());
-           //     System.out.println("Unmarshalled Emission" + offence.toString());
+                if (offence instanceof SpeedingOffence) {
+                    SpeedingOffence speedingOffence = (SpeedingOffence) offence;
+                    price = calculator.calculateSpeedWithoutHistory(penalty, speedingOffence);
+                    price = calculator.calculateWithHistory(price,penaltyService.getAmountForLicensceplate(offence.getLicencePlate()),penalty);
 
+                } else if (offence instanceof EmissionOffence) {
+                    price = calculator.calculateEmissionWithoutHistory(penalty);
+                    price = calculator.calculateWithHistory(price, penaltyService.getAmountForLicensceplate(offence.getLicencePlate()), penalty);
+                }
             }
             System.out.println("Penalty values " + penalty.getEmissionFactor() + penalty.getSpeedFactor() + penalty.getHistoryFactor());
-
-
 
         } catch (Exception e) {
             logger.error("Unexpected error during message handling", e);

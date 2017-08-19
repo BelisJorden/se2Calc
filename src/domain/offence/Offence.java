@@ -1,10 +1,9 @@
 package domain.offence;
 
+import domain.Penalty;
+
 import java.sql.Timestamp;
 
-/**
- * Created by jorden on 2-8-2017.
- */
 public class Offence {
     private Timestamp timestamp;
     private String licencePlate;
@@ -20,6 +19,7 @@ public class Offence {
 
     public Offence() {
     }
+
 
     public Timestamp getTimestamp() {
         return timestamp;
@@ -52,6 +52,7 @@ public class Offence {
     public void setCity(String city) {
         this.city = city;
     }
+
 
     @Override
     public String toString() {

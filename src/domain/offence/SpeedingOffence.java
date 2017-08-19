@@ -1,6 +1,6 @@
 package domain.offence;
 
-import domain.offence.Offence;
+import strategy.CalculateStrategy;
 
 import java.sql.Timestamp;
 
@@ -8,10 +8,6 @@ import java.sql.Timestamp;
  * Created by jorden on 2-8-2017.
  */
 public class SpeedingOffence extends Offence {
-    /*private Timestamp timestamp;
-    private String licencePlate;
-    private String street;
-    private String city;*/
     private int maxSpeed;
     private int speed;
 
@@ -19,11 +15,7 @@ public class SpeedingOffence extends Offence {
     }
 
     public SpeedingOffence(int speed , int maxSpeed, Timestamp timestamp, String licencePlate, String city, String street ) {
-      //  super(timestamp, licencePlate, street, city);
-        /*this.timestamp =timestamp;
-        this.licencePlate=licencePlate;
-        this.street=street;
-        this.city = city;*/
+        super(timestamp, licencePlate, street, city);
         this.maxSpeed = maxSpeed;
         this.speed = speed;
     }
@@ -43,6 +35,7 @@ public class SpeedingOffence extends Offence {
     public void setSpeed(int speed) {
         this.speed = speed;
     }
+
 
     @Override
     public String toString() {

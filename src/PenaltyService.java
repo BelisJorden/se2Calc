@@ -9,27 +9,27 @@ import java.io.IOException;
 /**
  * Created by jorden on 14-8-2017.
  */
-public class PenaltyService  {
+public class PenaltyService {
     private PenaltyServiceProxy penaltyService = new PenaltyServiceProxy();
+    private final String BASEURL = "www.services4se3.com/penalty/";
 
-    public Penalty getPenalty()  {
+    public Penalty getPenalty() {
 
-        String ENDPOINTURL = "www.services4se3.com/penalty/settings";
+        String url = BASEURL+"settings";
         Penalty penalty = new Penalty();
         String jsonString = null;
         try {
-            jsonString = penaltyService.get(ENDPOINTURL);
+            jsonString = penaltyService.get(url);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("oops");
             // hier defaultwaarde geven
-          penalty =  getDefaultValues();
+            penalty = getDefaultValues();
         }
 
 
         if (jsonString != null) {
             try {
-
                 JSONObject jsonObject = new JSONObject(jsonString);
                 penalty.setEmissionFactor(jsonObject.getInt("emissionFactor"));
                 penalty.setSpeedFactor(jsonObject.getInt("speedFactor"));
@@ -39,17 +39,39 @@ public class PenaltyService  {
                 e.printStackTrace();
             }
         }
-        return  penalty;
+        return penalty;
 
     }
 
-    private Penalty  getDefaultValues() {
+    private Penalty getDefaultValues() {
         Penalty penalty = new Penalty();
         penalty.setEmissionFactor(2);
         penalty.setHistoryFactor(3);
         penalty.setSpeedFactor(2);
-        return  penalty;
+        return penalty;
     }
 
 
+    public int getAmountForLicensceplate(String licencePlate) {
+        String url = BASEURL+licencePlate;
+        String jsonString = null;
+        int amount = 0;
+        try {
+            jsonString = penaltyService.get(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("oops");
+        }
+
+        if (jsonString != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(jsonString);
+                amount = jsonObject.getInt("amountOfPastPenalties");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return amount;
+    }
 }
