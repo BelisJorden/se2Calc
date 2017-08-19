@@ -1,32 +1,35 @@
 package domain.offence;
 
-import domain.offence.Offence;
+import java.sql.Timestamp;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Created by jorden on 15-8-2017.
- */
 public class EmissionOffences {
 
+    private Map<EmissionOffence,Timestamp> savedEmissionOffences;
+    private int timeToSave;
 
-    private List<Offence> emissionOffences;
-
-    public EmissionOffences() {
-        this.emissionOffences = new LinkedList<>();
+    public EmissionOffences(int timeToSave) {
+        this.savedEmissionOffences = new HashMap<>();
+        this.timeToSave = timeToSave;
     }
 
-    public List<Offence> getEmissionOffences() {
-        return emissionOffences;
+    public Map<EmissionOffence, Timestamp> getSavedEmissionOffences() {
+        return savedEmissionOffences;
     }
 
-    public void addOffence(Offence offence) {
-        emissionOffences.add(offence);
+    public int getTimeToSave() {
+        return timeToSave;
     }
 
-    public void removeOffence() {
-        emissionOffences.remove(0);
+    public void addEmissionOffence(EmissionOffence emissionOffence, Timestamp timestamp) {
+        this.savedEmissionOffences.put(emissionOffence, timestamp);
     }
+
+    public void removeOffence(EmissionOffence offence) {
+        savedEmissionOffences.remove(offence);
+    }
+
 
 }
