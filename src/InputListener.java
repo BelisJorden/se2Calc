@@ -1,5 +1,4 @@
-import domain.offence.Offence;
-import domain.offence.SpeedingOffence;
+import domain.entity.Offence;
 
 /**
  * Callback interface for incoming messages

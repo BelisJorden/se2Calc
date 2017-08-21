@@ -1,6 +1,5 @@
 import com.rabbitmq.client.*;
-import domain.offence.Offence;
-import domain.offence.SpeedingOffence;
+import domain.entity.Offence;
 import org.exolab.castor.xml.Unmarshaller;
 
 import java.io.IOException;

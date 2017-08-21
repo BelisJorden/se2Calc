@@ -1,8 +1,6 @@
-package domain;
+package domain.entity;
 
-/**
- * Created by jorden on 14-8-2017.
- */
+
 public class Penalty {
 
     private int speedFactor;

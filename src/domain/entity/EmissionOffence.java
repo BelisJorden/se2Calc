@@ -1,6 +1,4 @@
-package domain.offence;
-
-import domain.offence.Offence;
+package domain.entity;
 
 import java.sql.Timestamp;
 

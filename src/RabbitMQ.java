@@ -1,8 +1,8 @@
 import com.rabbitmq.client.*;
 
-import domain.offence.EmissionOffence;
-import domain.offence.Offence;
-import domain.offence.SpeedingOffence;
+import domain.entity.EmissionOffence;
+import domain.entity.Offence;
+import domain.entity.SpeedingOffence;
 import org.apache.log4j.Logger;
 import org.exolab.castor.xml.Unmarshaller;
 
@@ -67,14 +67,13 @@ public class RabbitMQ implements InputService {
 
                     if (listener != null) {
                         listener.onReceive(offence);
-                        logger.info("Delivered message to listener");
                     }
                 }
             };
             channel.basicConsume(queueName, true, consumer);
 
         } catch (Exception e) {
-            throw new CommunicationException("Error during RabbitMQ channel initialisation", e);
+            throw new CommunicationException("Error during  channel initialisation", e);
         }
     }
 

@@ -1,6 +1,6 @@
-package domain.offence;
+package domain.entity;
 
-import domain.Penalty;
+
 
 import java.sql.Timestamp;
 
@@ -56,7 +56,7 @@ public class Offence {
 
     @Override
     public String toString() {
-        return "domain.offence.Offence{" +
+        return "domain.entity.Offence{" +
                 "timestamp=" + timestamp +
                 ", licencePlate='" + licencePlate + '\'' +
                 ", street='" + street + '\'' +

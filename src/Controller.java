@@ -1,28 +1,27 @@
-import domain.Penalty;
-import domain.offence.EmissionOffence;
-import domain.offence.EmissionOffences;
-import domain.offence.Offence;
-import domain.offence.SpeedingOffence;
+import domain.entity.Penalty;
+import domain.entity.EmissionOffence;
+import domain.entity.EmissionOffences;
+import domain.entity.Offence;
+import domain.entity.SpeedingOffence;
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
-/**
- * Created by jorden on 19-8-2017.
- */
 public class Controller implements InputListener {
     private Logger logger = Logger.getLogger(Controller.class);
 
     private InputService inputService;
     private PenaltyService penaltyService;
-    private Penalty penalty;
+
     private boolean calculateWithHistory;
     private Calculator calculator;
     private EmissionOffences emissionOffences;
+    private Output output;
+
+    public void setOutput(Output output) {
+        this.output = output;
+    }
 
     public void setEmissionOffences(EmissionOffences emissionOffences) {
         this.emissionOffences = emissionOffences;
@@ -44,9 +43,7 @@ public class Controller implements InputListener {
         this.penaltyService = penaltyService;
     }
 
-    public Penalty getPenalty() {
-        return penalty;
-    }
+
 
     public boolean isCalculateWithHistory() {
         return calculateWithHistory;
@@ -56,9 +53,6 @@ public class Controller implements InputListener {
         this.calculateWithHistory = calculateWithHistory;
     }
 
-    public void setPenalty(Penalty penalty) {
-        this.penalty = penalty;
-    }
 
     public InputService getInputService() {
         return inputService;
@@ -89,11 +83,13 @@ public class Controller implements InputListener {
     public void onReceive(Offence offence) {
         int price = 0;
         boolean ignoreEmissionOffence = false;
-
+        boolean licencePlateError = false;
+        emissionOffences.clearSavedEmissionOffencesIfExpired();
         if (offence instanceof EmissionOffence) {
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            ignoreEmissionOffence = emissionOffences.checkSavedEmissionOffences((EmissionOffence) offence);
             emissionOffences.addEmissionOffence((EmissionOffence) offence,timestamp);
-            ignoreEmissionOffence = checkSavedEmissionOffences((EmissionOffence) offence);
+
         }
 
         try {
@@ -101,37 +97,47 @@ public class Controller implements InputListener {
             if (!calculateWithHistory) {
                 if (offence instanceof SpeedingOffence) {
                     SpeedingOffence speedingOffence = (SpeedingOffence) offence;
-                    price = calculator.calculateSpeedWithoutHistory(penalty, speedingOffence);
+                    price = calculator.calculateSpeedWithoutHistory(penaltyService.getPenalty(), speedingOffence);
 
                 } else if (offence instanceof EmissionOffence && !ignoreEmissionOffence) {
-                    price = calculator.calculateEmissionWithoutHistory(penalty);
+                    price = calculator.calculateEmissionWithoutHistory(penaltyService.getPenalty());
                 }
                 //Calculate with history
             } else {
-                if (offence instanceof SpeedingOffence) {
-                    SpeedingOffence speedingOffence = (SpeedingOffence) offence;
-                    price = calculator.calculateSpeedWithoutHistory(penalty, speedingOffence);
-                    price = calculator.calculateWithHistory(price,penaltyService.getAmountForLicensceplate(offence.getLicencePlate()),penalty);
+                 int amountForLicenseplate = penaltyService.getAmountForLicensceplate(offence.getLicencePlate());
 
-                } else if (offence instanceof EmissionOffence && !ignoreEmissionOffence) {
-                    price = calculator.calculateEmissionWithoutHistory(penalty);
-                    price = calculator.calculateWithHistory(price, penaltyService.getAmountForLicensceplate(offence.getLicencePlate()), penalty);
+                if (amountForLicenseplate == 0) {
+                    licencePlateError = true;
+
+                }
+                if (offence instanceof SpeedingOffence && !licencePlateError) {
+                    SpeedingOffence speedingOffence = (SpeedingOffence) offence;
+                    price = calculator.calculateSpeedWithoutHistory(penaltyService.getPenalty(), speedingOffence);
+                    price = calculator.calculateWithHistory(price,amountForLicenseplate,penaltyService.getPenalty());
+
+                } else if (offence instanceof EmissionOffence && !ignoreEmissionOffence && !licencePlateError) {
+                    price = calculator.calculateEmissionWithoutHistory(penaltyService.getPenalty());
+                    price = calculator.calculateWithHistory(price, amountForLicenseplate, penaltyService.getPenalty());
                 }
             }
-            System.out.println("Penalty values " + penalty.getEmissionFactor() + penalty.getSpeedFactor() + penalty.getHistoryFactor());
+            System.out.println("Penalty values " + penaltyService.getPenalty().getEmissionFactor() + penaltyService.getPenalty().getSpeedFactor() + penaltyService.getPenalty().getHistoryFactor());
             System.out.println("Calculated price " + price);
         } catch (Exception e) {
             logger.error("Unexpected error during message handling", e);
         }
 
-        if (!ignoreEmissionOffence) {
-           // sendToOutputQue();
+        if (ignoreEmissionOffence) {
+            logger.info("This offence will be ignored because it already occured in this zone some time ago");
         }
 
-        clearSavedEmissionOffencesIfExpired(emissionOffences.getTimeToSave());
+        if (!ignoreEmissionOffence && !licencePlateError) {
+           output.publish(offence,price);
+            System.out.println("Set the price " + price + " on the outputque");
+        }
+
     }
 
-    private void clearSavedEmissionOffencesIfExpired(int secondsToSave) {
+   /* private void clearSavedEmissionOffencesIfExpired(int secondsToSave) {
         // clear after amount of time
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
         List<EmissionOffence> emissionOffencesToRemove = new ArrayList<>();
@@ -154,7 +160,7 @@ public class Controller implements InputListener {
 
     private boolean checkSavedEmissionOffences(EmissionOffence emissionOffence) {
         boolean inSavedList =false;
-        // see if offence city and licensceplate is in list
+        // see if entity city and licensceplate is in list
         for (EmissionOffence savedEmissionOffence : emissionOffences.getSavedEmissionOffences().keySet()){
 
             if (emissionOffence.getLicencePlate().equals(savedEmissionOffence.getLicencePlate()) &&
@@ -165,6 +171,6 @@ public class Controller implements InputListener {
         }
 
         return  inSavedList;
-    }
+    }*/
 
 }

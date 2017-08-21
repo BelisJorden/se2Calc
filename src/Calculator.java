@@ -1,7 +1,5 @@
-import domain.offence.EmissionOffences;
-import domain.offence.Offence;
-import domain.Penalty;
-import domain.offence.SpeedingOffence;
+import domain.entity.Penalty;
+import domain.entity.SpeedingOffence;
 
 
 public class Calculator {
@@ -21,17 +19,17 @@ public class Calculator {
 
    }
 
-   /* public void calculate(Penalty penalty, Offence offence, boolean withHistory) {
+   /* public void calculate(Penalty penalty, Offence entity, boolean withHistory) {
 
 
 
         //mss wel ergens anders checken en dan gwn deze methode niet aanroepen
-        boolean reccuringEmmisionOffence = checkRecurringEmmisionOffence(offence);
+        boolean reccuringEmmisionOffence = checkRecurringEmmisionOffence(entity);
         if (!reccuringEmmisionOffence) {
-            int priceWithoutHistory = calculateWithoutHistory(penalty, offence);
+            int priceWithoutHistory = calculateWithoutHistory(penalty, entity);
             int price;
             if (withHistory) {
-                price = calculateWithHistory(penalty, offence, priceWithoutHistory);
+                price = calculateWithHistory(penalty, entity, priceWithoutHistory);
 
             } else {
                 price = priceWithoutHistory;
@@ -39,27 +37,27 @@ public class Calculator {
         }
     }
 
-    private boolean checkRecurringEmmisionOffence(Offence offence) {
+    private boolean checkRecurringEmmisionOffence(Offence entity) {
         boolean reccuringEmmsionOffence = false;
         for (Offence emmisionOffence : emmisionOffences.getEmissionOffences()) {
-            if (emmisionOffence.getLicenseplate == offence.getLisencePLate && emmisionOffence.getCity == offence.getCity) {
+            if (emmisionOffence.getLicenseplate == entity.getLisencePLate && emmisionOffence.getCity == entity.getCity) {
                 reccuringEmmsionOffence = true;
             }
         }
         return reccuringEmmsionOffence;
     }
 
-    private int calculateWithoutHistory(Penalty penalty,Offence offence) {
+    private int calculateWithoutHistory(Penalty penalty,Offence entity) {
         int price;
-        if (offence == speedOffence) {
-            price = (offence.getSpeed() * offence.getMaxSpeed() * penalty.getSpeedFactor());
+        if (entity == speedOffence) {
+            price = (entity.getSpeed() * entity.getMaxSpeed() * penalty.getSpeedFactor());
         } else {
             price = penalty.getEmissionFactor();
         }
         return price;
     }
 
-    private int calculateWithHistory(Penalty penalty, Offence offence, int priceWithoutHistory) {
+    private int calculateWithHistory(Penalty penalty, Offence entity, int priceWithoutHistory) {
         return priceWithoutHistory + (penaltyService.amountOfPastPenaltys* penalty.getHistoryFactor());
     }
 

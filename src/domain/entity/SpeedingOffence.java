@@ -1,12 +1,7 @@
-package domain.offence;
-
-
+package domain.entity;
 
 import java.sql.Timestamp;
 
-/**
- * Created by jorden on 2-8-2017.
- */
 public class SpeedingOffence extends Offence {
     private int maxSpeed;
     private int speed;
