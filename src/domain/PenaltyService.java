@@ -1,3 +1,5 @@
+package domain;
+
 import be.kdg.se3.services.PenaltyServiceProxy;
 
 import domain.entity.Penalty;
@@ -60,7 +62,7 @@ public class PenaltyService {
                 penalty.setSpeedFactor(jsonObject.getInt("speedFactor"));
                 penalty.setHistoryFactor(jsonObject.getInt("historyFactor"));
             } catch (JSONException e) {
-                logger.error("Error during json conversion in PenaltyService",e);
+                logger.error("Error during json conversion in domain.PenaltyService",e);
             }
         }
 
@@ -111,7 +113,7 @@ public class PenaltyService {
                     description = jsonObject.getString("description");
                 }
             } catch (JSONException e) {
-                logger.error("Error during json conversion in PenaltyService",e);
+                logger.error("Error during json conversion in domain.PenaltyService",e);
             }
 
         }

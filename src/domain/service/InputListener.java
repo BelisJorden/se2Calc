@@ -1,3 +1,5 @@
+package domain.service;
+
 import domain.entity.Offence;
 
 /**
@@ -6,7 +8,7 @@ import domain.entity.Offence;
 public interface InputListener {
     /**
      *
-     * Called by the InputListener when a new message arrives
+     * Called by the domain.service.InputListener when a new message arrives
      * @param
      */
     void onReceive(Offence offence);

@@ -1,3 +1,8 @@
+package domain.service;
+
+import domain.CommunicationException;
+import domain.service.InputListener;
+
 /**
  * An async service that can be used to receive messages from a communication interface (e.g. message queue)
  */

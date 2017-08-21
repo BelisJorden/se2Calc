@@ -6,9 +6,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
-/**
- * Created by jorden on 13-8-2017.
- */
+
 public class Receiver {
     private final static String QUEUE_NAME = "nogistest";
 

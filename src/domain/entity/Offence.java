@@ -56,7 +56,7 @@ public class Offence {
 
     @Override
     public String toString() {
-        return "domain.entity.Offence{" +
+        return "Offence{" +
                 "timestamp=" + timestamp +
                 ", licencePlate='" + licencePlate + '\'' +
                 ", street='" + street + '\'' +

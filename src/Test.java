@@ -1,4 +1,11 @@
+import adapters.input.RabbitMQInput;
+import adapters.output.RabbitMQOutput;
+import domain.Calculator;
+import domain.Controller;
+import domain.PenaltyService;
 import domain.entity.EmissionOffences;
+import domain.service.InputService;
+import domain.service.OutputService;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -21,7 +28,7 @@ public class Test {
                 ,TIMES_TO_TRY_FOR_GETTING_LICENSCEPLATEAMOUNT,SECONDS_TO_WAIT_BEFORE_RETRYING_LICENSCEPLATE);
         Calculator calculator = new Calculator();
         EmissionOffences emissionOffences = new EmissionOffences(SECONDS_TO_SAVE_EMISSIONOFFENCES);
-        OutputService outputService = new RabbitMQOutput("adapters/output", "localhost");
+        OutputService outputService = new RabbitMQOutput("output", "localhost");
 
         Controller controller = new Controller();
         controller.setInputService(inputservice);

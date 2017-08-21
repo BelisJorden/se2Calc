@@ -1,8 +1,13 @@
+package adapters.input;
+
 import com.rabbitmq.client.*;
 
+import domain.CommunicationException;
 import domain.entity.EmissionOffence;
 import domain.entity.Offence;
 import domain.entity.SpeedingOffence;
+import domain.service.InputListener;
+import domain.service.InputService;
 import org.apache.log4j.Logger;
 import org.exolab.castor.xml.Unmarshaller;
 

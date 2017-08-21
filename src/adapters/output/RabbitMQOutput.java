@@ -1,8 +1,10 @@
+package adapters.output;
+
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import domain.entity.OutputMessage;
-import domain.entity.Offence;
+import domain.service.OutputService;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.Marshaller;
 import org.exolab.castor.xml.ValidationException;

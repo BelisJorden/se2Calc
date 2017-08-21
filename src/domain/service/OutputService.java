@@ -1,3 +1,4 @@
+package domain.service;
 
 import domain.entity.OutputMessage;
 

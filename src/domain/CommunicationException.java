@@ -1,3 +1,5 @@
+package domain;
+
 /**
  * Wrapper for anything that goes wrong during communication with external systems
  * This can include both network failures and format conversion errors

@@ -1,3 +1,5 @@
+package domain;
+
 import domain.entity.Penalty;
 import domain.entity.SpeedingOffence;
 
