@@ -7,7 +7,7 @@ public class Calculator {
 
    public int calculateSpeedWithoutHistory(Penalty penalty, SpeedingOffence speedingOffence) {
 
-      return (speedingOffence.getSpeed() * speedingOffence.getMaxSpeed() * penalty.getSpeedFactor());
+      return ((speedingOffence.getSpeed() - speedingOffence.getMaxSpeed()) * penalty.getSpeedFactor());
    }
 
    public int calculateEmissionWithoutHistory(Penalty penalty) {

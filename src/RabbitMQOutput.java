@@ -11,21 +11,20 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.concurrent.TimeoutException;
 
-/**
- * Created by jorden on 20-8-2017.
- */
-public class Output {
+
+public class RabbitMQOutput implements OutputService {
 
     private String queName;
     private String host;
 
-    public Output(String queName, String host) {
+    public RabbitMQOutput(String queName, String host) {
         this.queName = queName;
         this.host = host;
     }
 
-    public void publish(Offence offence, int offenceAmount ) {
-        OutputMessage outputMessage = new OutputMessage(offence, offenceAmount);
+    @Override
+    public void publish(OutputMessage outputMessage ) {
+        //OutputMessage outputMessage = new OutputMessage(offence, offenceAmount);
         Marshaller marshaller = null;
         StringWriter strWriter = new StringWriter();
 

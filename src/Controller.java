@@ -1,8 +1,4 @@
-import domain.entity.Penalty;
-import domain.entity.EmissionOffence;
-import domain.entity.EmissionOffences;
-import domain.entity.Offence;
-import domain.entity.SpeedingOffence;
+import domain.entity.*;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -17,10 +13,11 @@ public class Controller implements InputListener {
     private boolean calculateWithHistory;
     private Calculator calculator;
     private EmissionOffences emissionOffences;
-    private Output output;
+    private OutputService outputService;
 
-    public void setOutput(Output output) {
-        this.output = output;
+
+    public void setOutputService(OutputService outputService) {
+        this.outputService = outputService;
     }
 
     public void setEmissionOffences(EmissionOffences emissionOffences) {
@@ -131,7 +128,8 @@ public class Controller implements InputListener {
         }
 
         if (!ignoreEmissionOffence && !licencePlateError) {
-           output.publish(offence,price);
+            OutputMessage outputMessage = new OutputMessage(offence, price);
+           outputService.publish(outputMessage);
             System.out.println("Set the price " + price + " on the outputque");
         }
 

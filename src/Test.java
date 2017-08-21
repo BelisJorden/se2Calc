@@ -16,12 +16,12 @@ public class Test {
         final int DEFAULT_HISTORYFACTOR =10;
 
 
-        InputService inputservice = new RabbitMQ("localhost", "nogistest");
+        InputService inputservice = new RabbitMQInput("localhost", "nogistest");
         PenaltyService penaltyService = new PenaltyService(DEFAULT_EMISSIONFACTOR,DEFAULT_SPEEDFACTOR,DEFAULT_HISTORYFACTOR
                 ,TIMES_TO_TRY_FOR_GETTING_LICENSCEPLATEAMOUNT,SECONDS_TO_WAIT_BEFORE_RETRYING_LICENSCEPLATE);
         Calculator calculator = new Calculator();
         EmissionOffences emissionOffences = new EmissionOffences(SECONDS_TO_SAVE_EMISSIONOFFENCES);
-        Output output = new Output("output", "localhost");
+        OutputService outputService = new RabbitMQOutput("adapters/output", "localhost");
 
         Controller controller = new Controller();
         controller.setInputService(inputservice);
@@ -29,7 +29,7 @@ public class Test {
         controller.setCalculateWithHistory(WITH_HISTORY);
         controller.setCalculator(calculator);
         controller.setEmissionOffences(emissionOffences);
-        controller.setOutput(output);
+        controller.setOutputService(outputService);
 
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {

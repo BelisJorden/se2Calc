@@ -1,12 +1,10 @@
 package domain.entity;
 
 
-import domain.entity.Offence;
-
-
 public class OutputMessage {
     private Offence offence;
     private int offenceAmount;
+
 
     public OutputMessage(Offence offence, int offenceAmount) {
         this.offence = offence;
@@ -17,7 +15,5 @@ public class OutputMessage {
         return offence;
     }
 
-    public int getOffenceAmount() {
-        return offenceAmount;
-    }
+    public int getOffenceAmount() {return offenceAmount;}
 }
